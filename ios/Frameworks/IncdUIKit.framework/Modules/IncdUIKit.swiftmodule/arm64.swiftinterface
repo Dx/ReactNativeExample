@@ -1,0 +1,204 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.2.4 (swiftlang-1103.0.32.9 clang-1103.0.32.53)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name IncdUIKit
+import Foundation
+@_exported import IncdUIKit
+import Swift
+import UIKit
+extension UIView {
+  public func pinEdgesToSuperview()
+  public func prepareForPopInAnimation()
+  public func animatePopIn(withDuration duration: Foundation.TimeInterval = 0.3, damping: CoreGraphics.CGFloat = 0.8, initialSpringVelocity: CoreGraphics.CGFloat = 4, _ completion: (() -> Swift.Void)? = nil)
+  public func animateVibrationForSuccess(_ completion: (() -> Swift.Void)?)
+  public func animateVibrationForFailure(_ completion: (() -> Swift.Void)?)
+  public func roundCorners(_ corners: QuartzCore.CACornerMask, radius: CoreGraphics.CGFloat)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class IncdBaseButton : UIKit.UIButton {
+  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc override dynamic open func awakeFromNib()
+  @objc override dynamic open var isHighlighted: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc override dynamic open var isSelected: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc override dynamic open var isEnabled: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  open func font(forState state: UIKit.UIControl.State) -> UIKit.UIFont
+  open func textColor(forState state: UIKit.UIControl.State) -> UIKit.UIColor
+  open func backgroundColor(forState state: UIKit.UIControl.State) -> UIKit.UIColor
+  open func setFontProperties(forState state: UIKit.UIControl.State)
+  open func borderColor(forState state: UIKit.UIControl.State) -> UIKit.UIColor
+  open func borderWidth(forState state: UIKit.UIControl.State) -> CoreGraphics.CGFloat
+  open func cornerRadius(forState state: UIKit.UIControl.State) -> CoreGraphics.CGFloat
+  open func shadow(forState state: UIKit.UIControl.State) -> Swift.Bool
+  open func shouldAnimate(fromState oldState: UIKit.UIControl.State, toState newState: UIKit.UIControl.State) -> Swift.Bool
+  open func setKerning(kern: Foundation.NSNumber)
+  @objc deinit
+}
+extension IncdCameraView {
+  public func animateSnapshotAndZoomIn(snapshot: UIKit.UIImage?, snapshotDuration: Foundation.TimeInterval)
+  public func animateFaceDetected()
+  public func animateWinState(_ completion: (() -> Swift.Void)?)
+  public func animateFailState(error: Swift.String? = nil, _ completion: (() -> Swift.Void)? = nil)
+  public func animateCameraReveal(duration: CoreFoundation.CFTimeInterval)
+  public func animateCameraHiding(_ completion: (() -> Swift.Void)? = nil)
+}
+public enum IndicatorType {
+  case normal
+  case large
+  case custom
+  public static func == (a: IncdUIKit.IndicatorType, b: IncdUIKit.IndicatorType) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+@objc @_inheritsConvenienceInitializers public class IncdActivityIndicator : UIKit.UIView {
+  open var type: IncdUIKit.IndicatorType {
+    get
+  }
+  open var size: CoreGraphics.CGSize {
+    get
+  }
+  open var isAnimating: Swift.Bool {
+    get
+  }
+  open var showPadlock: Swift.Bool {
+    get
+  }
+  open var hidesWhenStopped: Swift.Bool
+  required public init(type: IncdUIKit.IndicatorType = .normal, hidesWhenStopped: Swift.Bool = false, showPadlock: Swift.Bool = true)
+  @objc required override dynamic public init(frame: CoreGraphics.CGRect)
+  @objc required dynamic public init()
+  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  open func startAnimating()
+  open func stopAnimating()
+  open func successAnimation()
+  open func failureAnimation()
+  @objc deinit
+}
+public protocol IncdNumericKeypadDelegate : AnyObject {
+  func didTapOk(_ keypad: IncdUIKit.IncdNumericKeypad)
+  func didTapBackspace(_ keypad: IncdUIKit.IncdNumericKeypad)
+  func didTapNumber(_ number: Swift.String, keypad: IncdUIKit.IncdNumericKeypad)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class IncdNumericKeypad : UIKit.UIControl {
+  public var keypadFont: UIKit.UIFont
+  public var okKeyFont: UIKit.UIFont
+  public var keyColor: UIKit.UIColor
+  public var keyTitleColor: UIKit.UIColor
+  public var keyHighlightedColor: UIKit.UIColor
+  public var keyHighlightedTitleColor: UIKit.UIColor
+  public var okKeyDisabledColor: UIKit.UIColor
+  public var okKeyDisabledTitleColor: UIKit.UIColor
+  public var okKeyColor: UIKit.UIColor
+  public var okKeyTitleColor: UIKit.UIColor
+  public var backspaceImage: UIKit.UIImage?
+  public var backspaceHighlightedImage: UIKit.UIImage?
+  weak public var delegate: IncdUIKit.IncdNumericKeypadDelegate?
+  public func refresh()
+  public func enableOkButton(_ isEnabled: Swift.Bool = true)
+  @objc deinit
+}
+@objc open class RPCircularProgress : UIKit.UIView {
+  public typealias CompletionBlock = () -> Swift.Void
+  open var trackTintColor: UIKit.UIColor {
+    get
+    set
+  }
+  open var progressTintColor: UIKit.UIColor {
+    get
+    set
+  }
+  open var innerTintColor: UIKit.UIColor? {
+    get
+    set
+  }
+  open var roundedCorners: Swift.Bool {
+    get
+    set
+  }
+  open var thicknessRatio: CoreGraphics.CGFloat {
+    get
+    set
+  }
+  open var clockwiseProgress: Swift.Bool {
+    get
+    set
+  }
+  open var timingFunction: QuartzCore.CAMediaTimingFunction
+  open var progress: CoreGraphics.CGFloat {
+    get
+  }
+  open var indeterminateProgress: CoreGraphics.CGFloat {
+    get
+    set
+  }
+  open var indeterminateDuration: CoreFoundation.CFTimeInterval
+  @objc override dynamic open class var layerClass: Swift.AnyClass {
+    @objc get
+  }
+  @objc required dynamic public init()
+  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc override dynamic open func didMoveToWindow()
+  open func enableIndeterminate(_ enabled: Swift.Bool = true, completion: IncdUIKit.RPCircularProgress.CompletionBlock? = nil)
+  open func updateProgress(_ progress: CoreGraphics.CGFloat, animated: Swift.Bool = true, initialDelay: CoreFoundation.CFTimeInterval = 0, duration: CoreFoundation.CFTimeInterval? = nil, completion: IncdUIKit.RPCircularProgress.CompletionBlock? = nil)
+  @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @objc deinit
+}
+extension RPCircularProgress : QuartzCore.CAAnimationDelegate {
+  @objc dynamic public func animationDidStop(_ anim: QuartzCore.CAAnimation, finished flag: Swift.Bool)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class IncdBaseLabel : UIKit.UILabel {
+  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc override dynamic open func awakeFromNib()
+  open func font() -> UIKit.UIFont
+  open func textColor() -> UIKit.UIColor
+  open func backgroundColor() -> UIKit.UIColor
+  open func setFontProperties()
+  open func setKerning(kern: Foundation.NSNumber)
+  @objc deinit
+}
+extension UIColor {
+  @nonobjc public class var incdPrimary: UIKit.UIColor {
+    get
+  }
+  @nonobjc public class var incdAccent: UIKit.UIColor {
+    get
+  }
+  @nonobjc public class var incdError: UIKit.UIColor {
+    get
+  }
+  @nonobjc public class var incdSuccess: UIKit.UIColor {
+    get
+  }
+  @nonobjc public class var incdSecondary: UIKit.UIColor {
+    get
+  }
+  @nonobjc public class var incdDisabled: UIKit.UIColor {
+    get
+  }
+  @nonobjc public class var incdPlaceholder: UIKit.UIColor {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class IncdCameraView : UIKit.UIView {
+  @objc @IBOutlet weak public var cameraView: UIKit.UIView!
+  public var feedbackFontSize: CoreGraphics.CGFloat {
+    get
+    set
+  }
+  public func setup(cameraHeight: CoreGraphics.CGFloat? = nil)
+  public func showCamera(animated: Swift.Bool? = true)
+  public func showFeedback(_ message: Swift.String? = nil, _ isError: Swift.Bool?)
+  public func displayStatus(_ message: Swift.String? = nil, _ isError: Swift.Bool?)
+  public func cameraHidden() -> Swift.Bool
+  @objc deinit
+}
+extension IncdUIKit.IndicatorType : Swift.Equatable {}
+extension IncdUIKit.IndicatorType : Swift.Hashable {}

@@ -1,0 +1,916 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.2.4 (swiftlang-1103.0.32.9 clang-1103.0.32.53)
+// swift-module-flags: -target armv7-apple-ios9.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name IncdNetwork
+import AVFoundation
+import CommonCrypto
+import CoreGraphics
+import CoreLocation
+import Foundation
+import Swift
+import UIKit
+@frozen public struct OnboardingStartResponse : Swift.Codable {
+  public var token: Swift.String?
+  public var interviewId: Swift.String?
+  public var interviewCode: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct SuccessResponse : Swift.Codable {
+  public var success: Swift.Bool?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct InterviewInfoResponse : Swift.Codable {
+  public var interviewerName: Swift.String?
+  public var interviewToken: Swift.String?
+  public var sessionId: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct UploadIDResponse : Swift.Codable {
+  public var sharpness: Swift.Double?
+  public var glare: Swift.Double?
+  public var shadowConfidence: Swift.Double?
+  public var classification: Swift.Bool?
+  public var typeOfId: IncdNetwork.TypeOfID?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct GetImagesResponse : Swift.Codable {
+  public var selfie: Swift.String?
+  public var croppedFace: Swift.String?
+  public var croppedIDFace: Swift.String?
+  public var document: Swift.String?
+  public var signature: Swift.String?
+  public var fullFrameFrontID: Swift.String?
+  public var fullFrameBackID: Swift.String?
+  public var croppedFrontID: Swift.String?
+  public var croppedBackID: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct AddFaceResponse : Swift.Codable {
+  public var bluriness: Swift.Double?
+  public var confidence: Swift.Double?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct ProcessFaceResponse : Swift.Codable {
+  public var existingUser: Swift.Bool?
+  public var confidence: Swift.Double?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct GetQueueIndexResponse : Swift.Codable {
+  public var index: Swift.Int?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct ManualCorrectionStatusResponse : Swift.Codable {
+  public var finished: Swift.Bool?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct ProcessGovernmentValidationResponse : Swift.Codable {
+  public var statusCode: Swift.Int?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct User : Swift.Codable {
+  public let externalUserId: Swift.String
+  public let name: Swift.String
+  public let parentalLastName: Swift.String
+  public let maternalLastName: Swift.String
+  public let phoneNumber: Swift.String
+  public let cic: Swift.String
+  public let registrationYear: Swift.Int
+  public let electorKey: Swift.String
+  public let issuanceNumber: Swift.String
+  public let issuanceYear: Swift.String
+  public let birthDate: Swift.Int
+  public let gender: Swift.String
+  public let countryOfBirth: Swift.String
+  public let nationality: Swift.String
+  public let curp: Swift.String
+  public func asJSON() -> Foundation.Data
+  public func asJSONString() -> Swift.String
+  public var asDictionary: [Swift.String : Any] {
+    get
+  }
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension NetworkManager {
+  public func mockInit(name: Swift.String, phoneNumber: Swift.String, completion: @escaping (IncdNetwork.MockInitResponse?, Swift.String?) -> ())
+  public func initialize(userID: Swift.String, completion: @escaping (IncdNetwork.InitResponse?, Swift.String?) -> ())
+  public func enroll(template: Swift.String, croppedFace: Swift.String, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func recognize(template: Swift.String, croppedFace: Swift.String, completion: @escaping (Swift.Float?, Swift.String?) -> ())
+  public func detectSpoof(base64Frame: Swift.String, leftEye: CoreGraphics.CGPoint, rightEye: CoreGraphics.CGPoint, completion: @escaping (IncdNetwork.SpoofDetectResponse?, Swift.String?) -> ())
+  public func handleDetectSpoofResponse(_ response: Foundation.HTTPURLResponse) -> IncdNetwork.NetworkResult<Swift.String>
+  public func sendLivenessStats(stats: IncdNetwork.LivenessData, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func updateLivenessStats(stats: IncdNetwork.LivenessData, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func checkHealth(completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func appConfigs(completion: @escaping (IncdNetwork.Config?, Swift.String?) -> ())
+}
+public struct LivenessData : Swift.Codable {
+  public let deviceName: Swift.String
+  public let deviceType: Swift.String
+  public let version: Swift.String
+  public let buildNumber: Swift.String
+  public var frameSize: IncdNetwork.FrameSize
+  public var coordinates: IncdNetwork.FaceCoordinates
+  public var brightness: Swift.Float, blurriness: Swift.Float
+  public var livenessConfidence: Swift.Double?
+  public var statsID: Swift.String?
+  public var isSpoof: Swift.String?
+  public var base64Frame: Swift.String?
+  public init(statsID: Swift.String? = nil, isSpoofAttempt: Swift.Bool? = nil, confidence: Swift.Double? = nil, base64Frame: Swift.String? = nil, cropSize: CoreGraphics.CGSize, faceInFrame: IncdNetwork.FaceCoordinates, brightness: Swift.Float = 0.0, blurriness: Swift.Float = 0.0)
+  public func asJSON() -> Foundation.Data
+  public func asJSONString() -> Swift.String
+  public var asDictionary: [Swift.String : Any] {
+    get
+  }
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension LivenessData : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public struct FrameSize : Swift.Codable {
+  public let width: Swift.Int, height: Swift.Int
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct FaceCoordinates : Swift.Codable {
+  public let leftEyeX: CoreGraphics.CGFloat
+  public let leftEyeY: CoreGraphics.CGFloat
+  public let rightEyeX: CoreGraphics.CGFloat
+  public let rightEyeY: CoreGraphics.CGFloat
+  public let mouthX: CoreGraphics.CGFloat
+  public let mouthY: CoreGraphics.CGFloat
+  public let x: CoreGraphics.CGFloat
+  public let y: CoreGraphics.CGFloat
+  public let width: CoreGraphics.CGFloat
+  public let height: CoreGraphics.CGFloat
+  public init(leftEye: CoreGraphics.CGPoint, rightEye: CoreGraphics.CGPoint, mouth: CoreGraphics.CGPoint, faceBounds: CoreGraphics.CGRect)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public enum IncodeApp : Swift.String {
+  case Hello
+  case Welcome
+  case Greet
+  case FlashbackPro
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum IncodeEnvironment : Swift.String {
+  case Staging
+  case Demo
+  case Beta
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension NetworkManager {
+  public func uploadPhoto(imageData: Foundation.Data, onProgress: @escaping (Swift.Float?) -> Swift.Void, completion: @escaping (Swift.Bool?, Swift.String?) -> Swift.Void)
+  public func startFlow(template: Swift.String? = nil, adminAccess: Swift.Bool? = nil, livenessData: IncdNetwork.LivenessData? = nil, onProgress: @escaping (Swift.Float?) -> Swift.Void, completion: @escaping (IncdNetwork.StartFlowResponse?, Swift.String?) -> ())
+  public func getPhotos(completion: @escaping (IncdNetwork.GetPhotosSuccessResponse?, Swift.String?) -> ())
+  public func getAvatars(completion: @escaping (IncdNetwork.AvatarsSuccessResponse?, Swift.String?) -> ())
+  public func clearAll(completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func clear(_ userId: Swift.String, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+}
+public enum OnboardingAPI {
+  case startOnboarding(region: Swift.String, configurationId: Swift.String? = nil)
+  case addPhone(phone: Swift.String)
+  case statementInstitutionLogin(statementInstitution: IncdNetwork.StatementInstitution, username: Swift.String, password: Swift.String)
+  case sendFrontID(imageData: Foundation.Data, onlyFront: Swift.Bool?)
+  case sendBackID(imageData: Foundation.Data)
+  case processID(branch: Swift.String?)
+  case getImages(imageTypes: [Swift.String])
+  case addAddressStatement(imageData: Foundation.Data)
+  case processAddressStatement
+  case updateCustomerData(needsManualIDCheck: Swift.Bool?, needsManualSelfieCheck: Swift.Bool?)
+  case fetchOCRData
+  case addFace(imageData: Swift.String)
+  case processFace
+  case addToQueue(queueName: Swift.String?)
+  case getQueueIndex(queueName: Swift.String?)
+  case addSignature(imageData: Foundation.Data)
+  case addGeoLocation(location: CoreLocation.CLLocation, stringValue: Swift.String)
+  case deviceFingerprint(fingerprint: IncdNetwork.DeviceFingerprint)
+  case deleteUser(phoneNumber: Swift.String?)
+  case interviewInfo
+  case score
+  case approve(interviewId: Swift.String?)
+  case checkManualCorrectionStatus
+  case processGovernmentValidation
+  case addDocumentId(documentId: Swift.String)
+  case verifyInterviewCode(interviewCode: Swift.String)
+  case generateInterviewCode
+}
+@frozen public enum StatementInstitution : Swift.String {
+  case santander
+  case axtel
+  case cfe
+  case gasnaturalfernosa
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct DeviceFingerprint {
+  public var deviceType: Swift.String
+  public var hash: Swift.String
+  public var ip: Swift.String
+  public var data: Swift.String
+  public init(deviceType: Swift.String, hash: Swift.String, ip: Swift.String, data: Swift.String)
+}
+public enum IneAPI {
+  case validateIneURL(url: Swift.String)
+}
+extension NetworkManager {
+  public func initialize(phoneNumber: Swift.String?, uuid: Swift.String?, returnTemplate: Swift.Bool, completion: @escaping (IncdNetwork.InitializeResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func insertStats(frame: UIKit.UIImage, frameData: IncdNetwork.FrameData, completion: @escaping (IncdNetwork.IncodeSmileStatsResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func updateStats(frameData: IncdNetwork.FrameData, completion: @escaping (IncdNetwork.IncodeSmileStatsResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func detectSpoof(img: UIKit.UIImage, face: [Swift.String : Any], completion: @escaping (IncdNetwork.IncodeSmileFloatResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func detectSpoofWithEyes(img: UIKit.UIImage, face: [Swift.String : Any], completion: @escaping (IncdNetwork.IncodeSmileSpoofDetectResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func enroll(facePhoto: UIKit.UIImage, template: Swift.String, name: Swift.String?, completion: @escaping (IncdNetwork.IncodeSmileBoolResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func login(template: Swift.String, completion: @escaping (IncdNetwork.IncodeSmileFloatResponse?, IncdNetwork.IncodeError?) -> Swift.Void)
+  public func decrypt(image: UIKit.UIImage, completion: @escaping (Swift.Bool, IncdNetwork.IncodeError?) -> Swift.Void)
+}
+@frozen public struct OnboardingScoreInfo {
+  public var score: IncdNetwork.OnboardingScore?
+  public var idFrontBase64: Swift.String?
+  public var idBackBase64: Swift.String?
+  public init()
+}
+@frozen public struct OnboardingScore : Swift.Codable {
+  public let idValidation: IncdNetwork.IDValidation?
+  public let liveness: IncdNetwork.Liveness?
+  public let faceRecognition: IncdNetwork.FaceRecognition?
+  public let governmentValidation: IncdNetwork.GovernmentValidation?
+  public let overall: IncdNetwork.Result?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct Result : Swift.Codable {
+  public let value: Swift.String?
+  public let status: IncdNetwork.Status?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public enum Status : Swift.String, Swift.Codable {
+  case ok
+  case warning
+  case fail
+  case unknown
+  case manual
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@frozen public struct IDValidation : Swift.Codable {
+  public let overall: IncdNetwork.Result?
+  public let photoSecurityAndQuality: [IncdNetwork.IDCheck]?, idSpecific: [IncdNetwork.IDCheck]?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct IDCheck : Swift.Codable {
+  public let value: Swift.String?, key: Swift.String?
+  public let status: IncdNetwork.Status?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct Liveness : Swift.Codable {
+  public let overall: IncdNetwork.Result?
+  public let livenessScore: IncdNetwork.Result?
+  public let photoQuality: IncdNetwork.PhotoQuality?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct PhotoQuality : Swift.Codable {
+  public let value: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct FaceRecognition : Swift.Codable {
+  public let overall: IncdNetwork.Result?
+  public let croppedFace: Swift.String?, croppedIDFace: Swift.String?
+  public let existingUser: Swift.Bool?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct GovernmentValidation : Swift.Codable {
+  public let overall: IncdNetwork.Result?
+  public let recognitionConfidence: IncdNetwork.Result?
+  public let validationStatus: IncdNetwork.IDCheck?
+  public let ocrValidation: [IncdNetwork.IDCheck]?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct ImageParameterEncoder : IncdNetwork.ParameterEncoder {
+  public func encode(urlRequest: inout Foundation.URLRequest, with parameters: IncdNetwork.Parameters) throws
+}
+public struct MultipartImageParameterEncoder : IncdNetwork.ParameterEncoder {
+  public func encode(urlRequest: inout Foundation.URLRequest, with parameters: IncdNetwork.Parameters) throws
+}
+public enum PhotoshareAPI {
+  case uploadPhoto(imageData: Foundation.Data)
+  case startFlow(template: Swift.String?, livenessData: IncdNetwork.LivenessData?, adminAccess: Swift.Bool?)
+  case getPhotos
+  case clear(userId: Swift.String)
+  case clearAll
+  case avatars
+}
+public typealias HTTPHeaders = [Swift.String : Swift.String]
+public enum HTTPTask {
+  case request
+  case requestParameters(bodyParameters: IncdNetwork.Parameters?, bodyEncoding: IncdNetwork.ParameterEncoding, urlParameters: IncdNetwork.Parameters?)
+  case requestParametersAndHeaders(bodyParameters: IncdNetwork.Parameters?, bodyEncoding: IncdNetwork.ParameterEncoding, additionHeaders: IncdNetwork.HTTPHeaders?)
+  case requestParametersURLAndHeaders(bodyParameters: IncdNetwork.Parameters?, bodyEncoding: IncdNetwork.ParameterEncoding, urlParameters: IncdNetwork.Parameters?, additionHeaders: IncdNetwork.HTTPHeaders?)
+}
+public enum NetworkResult<String> {
+  case success
+  case failure(String)
+}
+public struct NetworkManager {
+  public static var baseURL: Swift.String?
+  public static var apiKey: Swift.String?
+  public static let wupuru: [Swift.UInt8]
+  public static var token: Swift.String? {
+    get
+    set
+  }
+  public static var logRequests: Swift.Bool
+  public init()
+}
+extension UIDevice {
+  public static let modelName: Swift.String
+}
+public enum IncdAPIError : Swift.String {
+  case phoneAlreadyExistsOnServer
+  case userWithCardNumberAlreadyExists
+  case customerWithEmployeeIdExists
+  public func errorKey() -> Swift.String?
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension UIImage {
+  public var jpegEncoded: Swift.String {
+    get
+  }
+  public func imageUsing(rect: CoreGraphics.CGRect) -> UIKit.UIImage?
+}
+extension Data {
+  public func parseJSON<T>(into: T.Type) throws -> T? where T : Swift.Decodable, T : Swift.Encodable
+}
+public struct CustomerInfo {
+  public var customerId: Swift.String
+  public var name: Swift.String?
+  public var phone: Swift.String?
+  public var birthDate: Swift.String?
+  public var address: Swift.String?
+  public var gender: Swift.String?
+  public var manualCheckNeeded: Swift.Bool?
+  public var frontIdBase64: Swift.String?
+  public var backIdBase64: Swift.String?
+  public var avatarBase64: Swift.String?
+  public init(customerId: Swift.String, name: Swift.String? = nil, phone: Swift.String? = nil, birthDate: Swift.String? = nil, address: Swift.String? = nil, gender: Swift.String? = nil, manualCheckNeeded: Swift.Bool? = nil, frontIdBase64: Swift.String? = nil, backIdBase64: Swift.String? = nil, avatarBase64: Swift.String? = nil)
+}
+public enum LoginAPI {
+  case initialize(phoneNumber: Swift.String?, uuid: Swift.String?, returnTemplate: Swift.Bool)
+  case insertStats(frame: UIKit.UIImage, frameData: IncdNetwork.FrameData)
+  case updateStats(frameData: IncdNetwork.FrameData)
+  case detectSpoof(img: UIKit.UIImage, face: [Swift.String : Any])
+  case detectSpoofWithEyes(img: UIKit.UIImage, face: [Swift.String : Any])
+  case enroll(facePhoto: UIKit.UIImage, template: Swift.String, name: Swift.String?)
+  case login(template: Swift.String)
+  case decrypt(facePhoto: UIKit.UIImage)
+}
+@frozen public enum TypeOfID : Swift.String, Swift.Codable {
+  case personalID
+  case passport
+  public init(from decoder: Swift.Decoder) throws
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum IncdAPI {
+  case mockInit(phoneNumber: Swift.String, name: Swift.String)
+  case initialize(userID: Swift.String)
+  case enroll(template: Swift.String, croppedFace: Swift.String)
+  case recognize(template: Swift.String, croppedFace: Swift.String)
+  case detectSpoof(base64Frame: Swift.String, leftEye: CoreGraphics.CGPoint, rightEye: CoreGraphics.CGPoint)
+  case sendLivenessStats(stats: IncdNetwork.LivenessData)
+  case updateLivenessStats(stats: IncdNetwork.LivenessData)
+  case health
+  case appConfigs
+}
+public enum KioskAPI {
+  case startFlow(customerID: Swift.String?, template: Swift.String?, croppedFace: Swift.String?, fingerprintImage: Swift.String?, adminAccess: Swift.Bool?, livenessData: IncdNetwork.LivenessData?)
+  case addPhoneNumber(number: Swift.String)
+  case addCardNumber(cardNumber: Swift.String)
+  case addEmployeeID(id: Swift.String)
+  case sendFrontID(imageData: Foundation.Data, reuploading: Swift.Bool, fakeCheck: Swift.Bool)
+  case sendBackID(imageData: Foundation.Data, reuploading: Swift.Bool, fakeCheck: Swift.Bool)
+  case addToQueue(branchId: Swift.String)
+  case getOCRData
+  case updateCustomer(customerInfo: IncdNetwork.CustomerInfo)
+  case deleteUser(phoneNumber: Swift.String?)
+  case deleteAll
+  case approve
+  case sendSms
+  case shareLink(photosIDs: [Swift.String])
+  case score(waitForManualCorrection: Swift.Bool)
+}
+public struct URLParameterEncoder : IncdNetwork.ParameterEncoder {
+  public func encode(urlRequest: inout Foundation.URLRequest, with parameters: IncdNetwork.Parameters) throws
+}
+extension NetworkManager {
+  public func startFlow(customerID: Swift.String? = nil, template: Swift.String? = nil, croppedFace: Swift.String? = nil, fingerprintImage: Swift.String? = nil, adminAccess: Swift.Bool? = nil, livenessData: IncdNetwork.LivenessData? = nil, onProgress: @escaping (Swift.Float?) -> Swift.Void, completion: @escaping (IncdNetwork.StartFlowResponse?, Swift.String?) -> ())
+  public func addPhoneNumber(phoneNumber: Swift.String, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func addCardNumber(cardNumber: Swift.String, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func addEmployeeId(id: Swift.String, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func sendFrontID(imageData: Foundation.Data, reuploading: Swift.Bool, fakeCheck: Swift.Bool, completion: @escaping (Swift.Bool?, Swift.Double?, Swift.Double?, Swift.String?) -> ())
+  public func sendBackID(imageData: Foundation.Data, reuploading: Swift.Bool, fakeCheck: Swift.Bool, completion: @escaping (Swift.Double?, Swift.Double?, Swift.String?) -> ())
+  public func addToQueue(branchId: Swift.String, completion: @escaping (Swift.String?, Swift.String?) -> ())
+  public func getOCRData(completion: @escaping (IncdNetwork.OCRData?, Swift.String?) -> ())
+  public func updateCustomer(customerInfo: IncdNetwork.CustomerInfo, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func deleteUser(phoneNumber: Swift.String?, completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func deleteAll(completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func approve(completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func sendSms(completion: @escaping (Swift.Bool?, Swift.String?) -> ())
+  public func shareLink(IDs: [Swift.String], completion: @escaping (Swift.String?, Swift.String?) -> ())
+  public func score(waitForManualCorrection: Swift.Bool, completion: @escaping (IncdNetwork.GetScoresResponse?, Swift.String?) -> ())
+}
+extension NetworkManager {
+  public func startOnboarding(region: Swift.String, configurationId: Swift.String? = nil, completion: @escaping (IncdNetwork.OnboardingStartResponse?, Swift.String?) -> ())
+  public func addPhone(phone: Swift.String, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func statementInstitutionLogin(statementInstitution: IncdNetwork.StatementInstitution, username: Swift.String, password: Swift.String, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func sendFrontID(imageData: Foundation.Data, onlyFront: Swift.Bool? = false, onProgress: @escaping (Swift.Float?) -> Swift.Void, completion: @escaping (IncdNetwork.UploadIDResponse?, Swift.String?) -> ())
+  public func sendBackID(imageData: Foundation.Data, onProgress: @escaping (Swift.Float?) -> Swift.Void, completion: @escaping (IncdNetwork.UploadIDResponse?, Swift.String?) -> ())
+  public func processID(branch: Swift.String?, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func getImages(imageTypes: [Swift.String], completion: @escaping (IncdNetwork.GetImagesResponse?, Swift.String?) -> ())
+  public func addAddressStatement(imageData: Foundation.Data, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func processAddressStatement(completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func updateCustomerData(needsIDManualCheck: Swift.Bool? = nil, needsSelfieManualCheck: Swift.Bool? = nil, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func fetchOCRData(completion: @escaping (IncdNetwork.OCRData?, Swift.String?) -> ())
+  public func addFace(imageData: Swift.String, completion: @escaping (IncdNetwork.AddFaceResponse?, Swift.String?) -> ())
+  public func processFace(completion: @escaping (IncdNetwork.ProcessFaceResponse?, Swift.String?) -> ())
+  public func addToQueue(queueName: Swift.String?, completion: @escaping (IncdNetwork.AddQueueResponse?, Swift.String?) -> ())
+  public func getQueueIndex(queueName: Swift.String?, completion: @escaping (IncdNetwork.GetQueueIndexResponse?, Swift.String?) -> ())
+  public func addSignature(imageData: Foundation.Data, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func addGeoLocation(location: CoreLocation.CLLocation, stringValue: Swift.String, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func addDeviceFingerprint(deviceFingerprint: IncdNetwork.DeviceFingerprint, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func getInterviewerInfo(completion: @escaping (IncdNetwork.InterviewInfoResponse?, Swift.String?) -> ())
+  public func deleteUserWelcome(phoneNumber: Swift.String?, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func score(completion: @escaping (IncdNetwork.OnboardingScore?, Swift.String?) -> ())
+  public func approve(interviewId: Swift.String?, completion: @escaping (IncdNetwork.ApproveUserResponse?, Swift.String?) -> ())
+  public func checkManualCorrectionStatus(completion: @escaping (IncdNetwork.ManualCorrectionStatusResponse?, Swift.String?) -> ())
+  public func processGovernmentValidation(completion: @escaping (IncdNetwork.ProcessGovernmentValidationResponse?, Swift.String?) -> ())
+  public func validateIneURL(urlString: Swift.String, redirect: @escaping (Swift.Bool?) -> (), completion: @escaping (Swift.String?, Swift.String?) -> ())
+  public func addDocumentId(documentId: Swift.String, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> ())
+  public func verifyInterviewCode(_ interviewCode: Swift.String, completion: @escaping (IncdNetwork.SuccessResponse?, Swift.String?) -> Swift.Void)
+  public func generateInterviewCode(completion: @escaping (IncdNetwork.InterviewCodeResponse?, Swift.String?) -> Swift.Void)
+}
+extension Dictionary where Key == Swift.String, Value == Any {
+  public var mouthPosition: CoreGraphics.CGPoint {
+    get
+  }
+  public var leftEye: CoreGraphics.CGPoint {
+    get
+  }
+  public var rightEye: CoreGraphics.CGPoint {
+    get
+  }
+  public var bounds: CoreGraphics.CGRect {
+    get
+  }
+  public var hasFaceAngle: Swift.Bool {
+    get
+  }
+  public var leftEyeClosed: Swift.Bool {
+    get
+  }
+  public var rightEyeClosed: Swift.Bool {
+    get
+  }
+  public func magicCrop(source: CoreGraphics.CGSize) -> CoreGraphics.CGRect
+}
+public typealias NetworkRouterCompletion = (Foundation.Data?, Foundation.URLResponse?, Swift.Error?) -> ()
+public typealias NetworkRouterProgress = (Swift.Float?) -> ()
+public typealias NetworkRedirectEvent = (Swift.Bool?) -> ()
+public enum HTTPMethod : Swift.String {
+  case get
+  case post
+  case put
+  case patch
+  case delete
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+}
+public typealias Parameters = [Swift.String : Any]
+public protocol ParameterEncoder {
+  func encode(urlRequest: inout Foundation.URLRequest, with parameters: IncdNetwork.Parameters) throws
+}
+public enum ParameterEncoding {
+  case urlEncoding
+  case jsonEncoding
+  case imageEncoding
+  case multipartImageEncoding
+  case urlAndJsonEncoding
+  public func encode(urlRequest: inout Foundation.URLRequest, bodyParameters: IncdNetwork.Parameters?, urlParameters: IncdNetwork.Parameters?) throws
+  public static func == (a: IncdNetwork.ParameterEncoding, b: IncdNetwork.ParameterEncoding) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+public enum NetworkError : Swift.String, Swift.Error {
+  case parametersNil
+  case encodingFailed
+  case missingURL
+  case missingImageDataParameter
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct InitInterviewResponse : Swift.Codable {
+  public let token: Swift.String
+  public let interviewToken: Swift.String?
+  public let sessionId: Swift.String?
+  public let interviewCode: Swift.String
+  public let interviewId: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct OCRData : Swift.Codable {
+  public let birthDate: Swift.Double?
+  public let name: IncdNetwork.Name?
+  public let address: Swift.String?
+  public let gender: Swift.String?
+  public let issueDate: Swift.Int?
+  public let expirationDate: Swift.Int?
+  public let registrationDate: Swift.Int?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct Name : Swift.Codable {
+  public let fullName: Swift.String?
+  public let firstName: Swift.String?
+  public let paternalLastName: Swift.String?
+  public let maternalLastName: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct RecognizeResponse : Swift.Codable {
+  public let spoofConfidence: Swift.Double?
+  public let confidence: Swift.Double?
+  public let base64CroppedImage: Swift.String?
+  public let existingUser: Swift.Bool?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct AddQueueResponse : Swift.Codable {
+  public let success: Swift.Bool
+  public let waitingTimeInSeconds: Swift.Int
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct InitResponse : Swift.Decodable {
+  public let token: Swift.String
+  public let enrolled: Swift.Bool
+  public let name: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+}
+public typealias MockInitResponse = IncdNetwork.InitResponse
+public struct SpoofDetectResponse : Swift.Decodable {
+  public let confidence: Swift.Double
+  public let blurriness: Swift.Int
+  public let statId: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+}
+public protocol StartFlowResponse : Swift.Decodable {
+}
+public struct StartFlowSuccessResponse : IncdNetwork.StartFlowResponse {
+  public var token: Swift.String
+  public var customerId: Swift.String?
+  public var name: Swift.String?
+  public var hasFrontID: Swift.Bool?
+  public var hasBackID: Swift.Bool?
+  public var phone: Swift.String?
+  public var enrolled: Swift.Bool?
+  public let confidence: Swift.Double?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct StartFlowErrorResponse : IncdNetwork.StartFlowResponse {
+  @frozen public enum Status : Swift.Int, Swift.Decodable {
+    case userNotFoundOnServer
+    case spoofAttemptDetected
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public var timestamp: Foundation.Date?
+  public var status: IncdNetwork.StartFlowErrorResponse.Status
+  public var error: Swift.String?
+  public var message: Swift.String?
+  public var path: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct UploadFrontIDResponse : Swift.Decodable {
+  public var classification: Swift.Bool?
+  public var sharpness: Swift.Double?
+  public var glare: Swift.Double?
+  public var shadowConfidence: Swift.Double?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct UploadBackIDResponse : Swift.Decodable {
+  public var sharpness: Swift.Double?
+  public var glare: Swift.Double?
+  public var shadowConfidence: Swift.Double?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct GetScoresResponse : Swift.Decodable {
+  public var idValidation: IncdNetwork.IdValidationResult?
+  public var liveness: IncdNetwork.IdValidationResult?
+  public var faceRecognition: IncdNetwork.FaceRecognitionResult?
+  public var overall: IncdNetwork.Score?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct IdValidationResult : Swift.Decodable {
+  public var idFrontBase64: Swift.String?
+  public var idBackBase64: Swift.String?
+  public var photoSecurityAndQuality: [IncdNetwork.Score]?
+  public var idSpecific: [IncdNetwork.Score]?
+  public var overall: IncdNetwork.Score?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct LivenessResult : Swift.Decodable {
+  public var livenessScore: IncdNetwork.Score?
+  public var photoQuality: IncdNetwork.Score?
+  public var overall: IncdNetwork.Score?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FaceRecognitionResult : Swift.Decodable {
+  public var croppedFace: Swift.String?
+  public var croppedIdFace: Swift.String?
+  public var existingUser: Swift.Bool?
+  public var overall: IncdNetwork.Score?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct Score : Swift.Decodable {
+  public var value: Swift.String?
+  public var status: Swift.String?
+  public var key: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+}
+@frozen public struct ApproveUserResponse : Swift.Codable {
+  public var success: Swift.Bool?
+  public var uuid: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct InterviewCodeResponse : Swift.Codable {
+  public var interviewCode: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension NSNotification.Name {
+  public static let IncdAnalyticsCameraDidInit: Foundation.NSNotification.Name
+  public static let IncdAnalyticsNetworkServerProcessingFR: Foundation.NSNotification.Name
+  public static let IncdAnalyticsNetworkRequestSizeServerSD: Foundation.NSNotification.Name
+}
+@objc public enum IncodeErrorType : Swift.Int {
+  case wrongParameters = 0
+  case wrongResponse = 1
+  case noConnectivity = 2
+  case serverError = 3
+  case unauthorized = 4
+  case nonExistingUser = 5
+  case cropTooSmall = 6
+  case faceIsTooBlurry = 7
+  case errorNotDefined = 8
+  public func errorDescription() -> Swift.String
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public enum GovernmentValidationStatus : Swift.Int {
+  case ok = 0
+  case fail = 1
+  case connectionError = 2
+  case governmentInfrastructureError = 3
+  case moduleNotSupported = 4
+  case missingDocumentIdentifier = 5
+  case missingSelfie = 6
+  case userNotFound = 7
+  case userNotInDatabase = 8
+  case inssufficientLookUpData = 9
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeError : ObjectiveC.NSObject {
+  @objc final public let error: Foundation.NSError
+  @objc final public let type: IncdNetwork.IncodeErrorType
+  @objc override dynamic public init()
+  @objc deinit
+}
+public protocol InitializeResponse : Swift.Decodable {
+}
+public struct InitializeSuccessResponse : IncdNetwork.InitializeResponse {
+  public let enrolled: Swift.Bool
+  public let token: Swift.String
+  public let name: Swift.String?
+  public let template: Swift.String?
+  public let uuid: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct InitializeErrorResponse : IncdNetwork.InitializeResponse {
+  @frozen public enum Status : Swift.Int, Swift.Decodable {
+    case userIsNotApproved
+    case badRequest
+    case userNotFound
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public var timestamp: Foundation.Date?
+  public var status: IncdNetwork.InitializeErrorResponse.Status
+  public var error: Swift.String?
+  public var message: Swift.String?
+  public var path: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileFloatResponse : ObjectiveC.NSObject {
+  @objc final public let value: Swift.Float
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileSpoofDetectResponse : ObjectiveC.NSObject {
+  @objc final public let confidence: Swift.Float
+  @objc final public let blurriness: Swift.Float
+  @objc final public let isSpoof: Swift.Bool
+  @objc final public let statsID: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileStatsResponse : ObjectiveC.NSObject {
+  @objc final public let value: Swift.Bool
+  @objc final public let statID: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileBoolResponse : ObjectiveC.NSObject {
+  @objc final public let value: Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileDictResponse : ObjectiveC.NSObject {
+  @objc final public let value: [Swift.String : Swift.AnyObject]?
+  @objc deinit
+  @objc override dynamic public init()
+}
+@objc public class IncodeServiceConfiguration : ObjectiveC.NSObject {
+  @objc final public let baseURL: Swift.String
+  @objc final public let apiKey: Swift.String
+  @objc final public let confidenceThreshold: Swift.Float
+  @objc public init(baseURL: Swift.String, apiKey: Swift.String, confidenceThreshold: Swift.Float)
+  @objc deinit
+  @objc override dynamic public init()
+}
+public typealias IncodeToken = Swift.String
+public struct GetPhotosSuccessResponse : Swift.Decodable {
+  public var photos: [IncdNetwork.FBProPhoto]?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FBProPhoto : Swift.Decodable {
+  public var photoId: Swift.String
+  public var originalPhotoUrl: Swift.String
+  public var resizedPhotoUrl: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct AvatarsSuccessResponse : Swift.Decodable {
+  public var avatars: [IncdNetwork.Avatar]?
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct Avatar : Swift.Decodable {
+  public var id: Swift.String
+  public var url: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct Config : Swift.Codable {
+  public let ios: IncdNetwork.ConfigiOS
+  public func minVersion(forApp app: IncdNetwork.IncodeApp, andEnvironment env: IncdNetwork.IncodeEnvironment) -> Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct ConfigiOS : Swift.Codable {
+  public let greet: IncdNetwork.AppConfig, hello: IncdNetwork.AppConfig, welcome: IncdNetwork.AppConfig
+  public func appConfig(_ app: IncdNetwork.IncodeApp) -> IncdNetwork.AppConfig?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct AppConfig : Swift.Codable {
+  public let environmentConfigs: [IncdNetwork.EnvironmentConfig]
+  public func environmentConfig(_ env: IncdNetwork.IncodeEnvironment) -> IncdNetwork.EnvironmentConfig?
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct EnvironmentConfig : Swift.Codable {
+  public let name: Swift.String
+  public let minVersion: Swift.String
+  public let customData: Swift.String
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct JSONParameterEncoder : IncdNetwork.ParameterEncoder {
+  public func encode(urlRequest: inout Foundation.URLRequest, with parameters: IncdNetwork.Parameters) throws
+}
+public struct FaceInFrame : Swift.Codable {
+  public init(face: [Swift.String : Any])
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct FrameData : Swift.Codable {
+  public var statsID: Swift.String
+  public var isSpoof: Swift.String?
+  public var frameSize: IncdNetwork.FrameSize
+  public var coordinates: IncdNetwork.FaceInFrame
+  public init(statsID: Swift.String = "", spoof: Swift.Bool? = nil, confidence: Swift.Double, fSize: CoreGraphics.CGSize, face: [Swift.String : Any], brightness: Swift.Float = 0.0, blurriness: Swift.Float = 0.0)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension FrameData : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension IncdNetwork.IncodeApp : Swift.Equatable {}
+extension IncdNetwork.IncodeApp : Swift.Hashable {}
+extension IncdNetwork.IncodeApp : Swift.RawRepresentable {}
+extension IncdNetwork.IncodeEnvironment : Swift.Equatable {}
+extension IncdNetwork.IncodeEnvironment : Swift.Hashable {}
+extension IncdNetwork.IncodeEnvironment : Swift.RawRepresentable {}
+extension IncdNetwork.StatementInstitution : Swift.Equatable {}
+extension IncdNetwork.StatementInstitution : Swift.Hashable {}
+extension IncdNetwork.StatementInstitution : Swift.RawRepresentable {}
+extension IncdNetwork.Status : Swift.Equatable {}
+extension IncdNetwork.Status : Swift.Hashable {}
+extension IncdNetwork.Status : Swift.RawRepresentable {}
+extension IncdNetwork.IncdAPIError : Swift.Equatable {}
+extension IncdNetwork.IncdAPIError : Swift.Hashable {}
+extension IncdNetwork.IncdAPIError : Swift.RawRepresentable {}
+extension IncdNetwork.TypeOfID : Swift.Equatable {}
+extension IncdNetwork.TypeOfID : Swift.Hashable {}
+extension IncdNetwork.TypeOfID : Swift.RawRepresentable {}
+extension IncdNetwork.HTTPMethod : Swift.Equatable {}
+extension IncdNetwork.HTTPMethod : Swift.Hashable {}
+extension IncdNetwork.HTTPMethod : Swift.RawRepresentable {}
+extension IncdNetwork.ParameterEncoding : Swift.Equatable {}
+extension IncdNetwork.ParameterEncoding : Swift.Hashable {}
+extension IncdNetwork.NetworkError : Swift.Equatable {}
+extension IncdNetwork.NetworkError : Swift.Hashable {}
+extension IncdNetwork.NetworkError : Swift.RawRepresentable {}
+extension IncdNetwork.StartFlowErrorResponse.Status : Swift.Equatable {}
+extension IncdNetwork.StartFlowErrorResponse.Status : Swift.Hashable {}
+extension IncdNetwork.StartFlowErrorResponse.Status : Swift.RawRepresentable {}
+extension IncdNetwork.IncodeErrorType : Swift.Equatable {}
+extension IncdNetwork.IncodeErrorType : Swift.Hashable {}
+extension IncdNetwork.IncodeErrorType : Swift.RawRepresentable {}
+extension IncdNetwork.GovernmentValidationStatus : Swift.Equatable {}
+extension IncdNetwork.GovernmentValidationStatus : Swift.Hashable {}
+extension IncdNetwork.GovernmentValidationStatus : Swift.RawRepresentable {}
+extension IncdNetwork.InitializeErrorResponse.Status : Swift.Equatable {}
+extension IncdNetwork.InitializeErrorResponse.Status : Swift.Hashable {}
+extension IncdNetwork.InitializeErrorResponse.Status : Swift.RawRepresentable {}

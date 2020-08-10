@@ -1,0 +1,224 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.2.4 (swiftlang-1103.0.32.9 clang-1103.0.32.53)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name IncdOnboarding
+import AVFoundation
+import AVKit
+import CommonCrypto
+import CoreGraphics
+import CoreLocation
+import CoreMedia
+import CoreMotion
+import CoreTelephony
+import CryptoKit
+import Foundation
+import IncdNetwork
+@_exported import IncdOnboarding
+import IncdRecogKit
+import IncdUIKit
+import IncdUtils
+import OpenTok
+import Swift
+import UIKit
+import Vision
+@frozen public struct SelfieScanResult {
+  public var spoofAttempt: Swift.Bool?
+  public var image: UIKit.UIImage?
+}
+@frozen public enum UserScoreFetchMode : Swift.CaseIterable {
+  case accurate
+  case fast
+  public var name: Swift.String {
+    get
+  }
+  public var localizedName: Swift.String {
+    get
+  }
+  public static func getUserScoreFetchModeBy(name: Swift.String) -> IncdOnboarding.UserScoreFetchMode?
+  public static func == (a: IncdOnboarding.UserScoreFetchMode, b: IncdOnboarding.UserScoreFetchMode) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+  public typealias AllCases = [IncdOnboarding.UserScoreFetchMode]
+  public static var allCases: [IncdOnboarding.UserScoreFetchMode] {
+    get
+  }
+}
+@frozen public struct UserScore {
+  public let idValidation: IncdNetwork.IDValidation?
+  public let liveness: IncdNetwork.Liveness?
+  public let faceRecognition: IncdNetwork.FaceRecognition?
+  public let governmentValidation: IncdNetwork.GovernmentValidation?
+  public let overall: IncdNetwork.Result?
+}
+@frozen public struct PhoneNumberResult {
+  public var phone: Swift.String?
+  public var resultCode: IncdOnboarding.ResultCode = ResultCode.error
+}
+@frozen public struct AddressValidationResult {
+  public var addressStatementImage: UIKit.UIImage?
+  public var resultCode: IncdOnboarding.ResultCode = ResultCode.error
+}
+@frozen public struct ApprovalResult {
+  public var uuid: Swift.String?
+  public var success: Swift.Bool
+}
+@_hasMissingDesignatedInitializers public class IncdOnboardingTheme {
+  public static var btnBackgroundColor: UIKit.UIColor
+  public static var btnBackgroundColorDisabled: UIKit.UIColor
+  public static var btnTitleColor: UIKit.UIColor
+  public static var btnTitleFontName: Swift.String
+  public static var labelPhoneTintColor: UIKit.UIColor
+  public static var labelPhoneFontName: Swift.String
+  public static var labelPhoneTextColor: UIKit.UIColor
+  public static var labelPrimaryFontName: Swift.String
+  public static var labelPrimaryTextColor: UIKit.UIColor
+  public static var labelPrimaryHighlightColor: UIKit.UIColor
+  public static var labelSecondaryFontName: Swift.String
+  public static var labelSecondaryTextColor: UIKit.UIColor
+  @objc deinit
+}
+@frozen public struct SignatureFormResult {
+  public var signature: UIKit.UIImage?
+  public var resultCode: IncdOnboarding.ResultCode
+}
+@frozen public enum IDType {
+  case id
+  case passport
+  public static func == (a: IncdOnboarding.IDType, b: IncdOnboarding.IDType) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+@frozen public struct CaptchaResult {
+  public var captcha: Swift.String?
+  public var resultCode: IncdOnboarding.ResultCode = ResultCode.error
+}
+extension IncdOnboardingManager {
+  public func startOnboarding(vc: UIKit.UIViewController, config: IncdOnboarding.IncdOnboardingConfiguration, delegate: IncdOnboarding.IncdOnboardingDelegate?)
+  public func startIdCapture(vc: UIKit.UIViewController, showTutorials: Swift.Bool? = nil, idAutoCaptureTimeout: Foundation.TimeInterval? = nil, completion: @escaping (IncdOnboarding.IdCaptureResult?, IncdOnboarding.IncdOnboardingError?) -> Swift.Void)
+  public func startSelfieCapture(vc: UIKit.UIViewController, showTutorials: Swift.Bool? = nil, completion: @escaping (UIKit.UIImage?, IncdOnboarding.IncdOnboardingError?) -> Swift.Void)
+  public func startVideoConference(vc: UIKit.UIViewController, validateCaptcha: Swift.Bool, token: Swift.String? = nil, disableMicOnCallStarted: Swift.Bool? = nil, delegate: IncdOnboarding.IncdOnboardingVideoConferenceDelegate)
+}
+@frozen public struct FaceMatchResult {
+  public var faceMatched: Swift.Bool?
+}
+@_hasMissingDesignatedInitializers public class IncdOnboardingManager {
+  public static let shared: IncdOnboarding.IncdOnboardingManager
+  public func initIncdOnboarding(url: Swift.String, apiKey: Swift.String, loggingEnabled: Swift.Bool = true, _ completion: ((Swift.Bool?, IncdOnboarding.IncdOnboardingError?) -> ())? = nil)
+  @objc deinit
+}
+@frozen public enum IncdOnboardingError {
+  case notInitialized
+  case invalidInitParams(url: Swift.String?, apiKey: Swift.String?)
+  case modulesInvalidOrder(_: Swift.String)
+  case missingModule(_: Swift.String)
+  case moduleNotAvailable(_: Swift.String)
+  case captchaNotVerified(_: Swift.String)
+  case unknownError
+  public var description: Swift.String {
+    get
+  }
+}
+public class IncdOnboardingConfiguration {
+  public init(region: IncdUtils.IncdRegion? = nil, queue: Swift.String? = nil)
+  public func addIntro()
+  public func addPhone()
+  public func addIdScan(showTutorials: Swift.Bool? = nil, idType: IncdOnboarding.IDType? = nil, idAutoCaptureTimeout: Foundation.TimeInterval? = nil)
+  public func addAddressValidation()
+  public func addSelfieScan(showTutorials: Swift.Bool? = nil)
+  public func addFaceMatch()
+  public func addSignature()
+  public func addApproval(forceApproval: Swift.Bool? = nil)
+  public func addUserScore(userScoreFetchMode: IncdOnboarding.UserScoreFetchMode? = .accurate)
+  public func addCaptcha()
+  public func addVideoConference(disableMicOnCallStarted: Swift.Bool? = nil)
+  @objc deinit
+}
+public protocol IncdOnboardingVideoConferenceDelegate {
+  func onVideoConferenceCompleted(_ result: IncdOnboarding.ResultCode)
+  func onEstimatedWaitingTime(_ waitingTimeInSeconds: Swift.Int)
+  func onQueuePositionChanged(_ newQueuePosition: Swift.Int)
+  func onCaptchaCompleted(_ result: IncdOnboarding.CaptchaResult)
+}
+public protocol IncdOnboardingDelegate {
+  func onOnboardingSessionCreated(_ result: IncdOnboarding.OnboardingSessionResult)
+  func onAddPhoneNumberCompleted(_ result: IncdOnboarding.PhoneNumberResult)
+  func onIdValidationCompleted(_ result: IncdOnboarding.IdValidationResult)
+  func onAddressValidationCompleted(_ result: IncdOnboarding.AddressValidationResult)
+  func onSelfieScanCompleted(_ result: IncdOnboarding.SelfieScanResult)
+  func onFaceMatchCompleted(_ result: IncdOnboarding.FaceMatchResult)
+  func onSignatureCollected(_ result: IncdOnboarding.SignatureFormResult)
+  func onApproveCompleted(_ result: IncdOnboarding.ApprovalResult)
+  func onVideoConferenceCompleted(_ result: IncdOnboarding.ResultCode)
+  func onQueuePositionChanged(_ newQueuePosition: Swift.Int)
+  func onEstimatedWaitingTime(_ waitingTimeInSeconds: Swift.Int)
+  func onUserScoreFetched(_ result: IncdOnboarding.UserScore)
+  func onSuccess()
+  func onError(_ error: IncdOnboarding.IncdOnboardingError)
+}
+extension IncdOnboardingDelegate {
+  public func onOnboardingSessionCreated(_ result: IncdOnboarding.OnboardingSessionResult)
+  public func onAddPhoneNumberCompleted(_ result: IncdOnboarding.PhoneNumberResult)
+  public func onIdValidationCompleted(_ result: IncdOnboarding.IdValidationResult)
+  public func onAddressValidationCompleted(_ result: IncdOnboarding.AddressValidationResult)
+  public func onSelfieScanCompleted(_ result: IncdOnboarding.SelfieScanResult)
+  public func onFaceMatchCompleted(_ result: IncdOnboarding.FaceMatchResult)
+  public func onSignatureCollected(_ result: IncdOnboarding.SignatureFormResult)
+  public func onApproveCompleted(_ result: IncdOnboarding.ApprovalResult)
+  public func onUserScoreFetched(_ result: IncdOnboarding.UserScore)
+  public func onCaptchaCompleted(_ result: IncdOnboarding.CaptchaResult)
+  public func onVideoConferenceCompleted(_ result: IncdOnboarding.ResultCode)
+  public func onQueuePositionChanged(_ newQueuePosition: Swift.Int)
+  public func onEstimatedWaitingTime(_ waitingTimeInSeconds: Swift.Int)
+}
+@frozen public struct OnboardingSessionResult {
+  public var token: Swift.String?
+  public var interviewId: Swift.String?
+  public var result: IncdOnboarding.ResultCode
+}
+@frozen public enum ResultCode {
+  case success
+  case error
+  case userCancelled
+  public static func == (a: IncdOnboarding.ResultCode, b: IncdOnboarding.ResultCode) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+@frozen public enum IncdIdValidationStatus {
+  case unknown
+  case ok
+  case errorCropQuality
+  case errorClassification
+  case noFacesFound
+  case errorGlare
+  case errorSharpness
+  case errorTypeMismatch
+  public static func == (a: IncdOnboarding.IncdIdValidationStatus, b: IncdOnboarding.IncdIdValidationStatus) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+@frozen public struct IdCaptureResult {
+  public var frontIdImage: UIKit.UIImage?
+  public var backIdImage: UIKit.UIImage?
+}
+@frozen public struct IdValidationResult {
+  public var idCaptureResult: IncdOnboarding.IdCaptureResult?
+  public var frontIdCroppedFace: UIKit.UIImage?
+  public var frontIdResult: IncdOnboarding.IncdIdValidationStatus
+  public var backIdResult: IncdOnboarding.IncdIdValidationStatus
+  public var ocrData: IncdNetwork.OCRData?
+}
+extension IncdOnboarding.UserScoreFetchMode : Swift.Equatable {}
+extension IncdOnboarding.UserScoreFetchMode : Swift.Hashable {}
+extension IncdOnboarding.IDType : Swift.Equatable {}
+extension IncdOnboarding.IDType : Swift.Hashable {}
+extension IncdOnboarding.ResultCode : Swift.Equatable {}
+extension IncdOnboarding.ResultCode : Swift.Hashable {}
+extension IncdOnboarding.IncdIdValidationStatus : Swift.Equatable {}
+extension IncdOnboarding.IncdIdValidationStatus : Swift.Hashable {}

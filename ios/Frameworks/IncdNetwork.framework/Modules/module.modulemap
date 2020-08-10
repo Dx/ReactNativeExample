@@ -1,0 +1,4 @@
+framework module IncdNetwork {
+  header "IncdNetwork-Swift.h"
+  requires objc
+}

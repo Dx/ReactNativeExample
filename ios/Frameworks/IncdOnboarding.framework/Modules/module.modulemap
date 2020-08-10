@@ -1,0 +1,11 @@
+framework module IncdOnboarding {
+  umbrella header "IncdOnboarding.h"
+
+  export *
+  module * { export * }
+}
+
+module IncdOnboarding.Swift {
+    header "IncdOnboarding-Swift.h"
+    requires objc
+}

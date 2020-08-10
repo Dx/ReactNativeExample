@@ -1,0 +1,11 @@
+framework module IncdUIKit {
+  umbrella header "IncdUIKit.h"
+
+  export *
+  module * { export * }
+}
+
+module IncdUIKit.Swift {
+    header "IncdUIKit-Swift.h"
+    requires objc
+}

@@ -1,0 +1,6 @@
+framework module IncdRecogKit {
+  umbrella header "IncdRecogKit.h"
+
+  export *
+  module * { export * }
+}

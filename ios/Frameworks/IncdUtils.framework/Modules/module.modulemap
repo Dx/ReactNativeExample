@@ -1,0 +1,11 @@
+framework module IncdUtils {
+  umbrella header "IncdUtils.h"
+
+  export *
+  module * { export * }
+}
+
+module IncdUtils.Swift {
+    header "IncdUtils-Swift.h"
+    requires objc
+}

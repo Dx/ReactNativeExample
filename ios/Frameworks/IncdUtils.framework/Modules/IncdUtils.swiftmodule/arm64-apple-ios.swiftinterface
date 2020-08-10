@@ -1,0 +1,398 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.2.4 (swiftlang-1103.0.32.9 clang-1103.0.32.53)
+// swift-module-flags: -target arm64-apple-ios9.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name IncdUtils
+import AVFoundation
+import AVKit
+import CoreImage
+import Foundation
+@_exported import IncdUtils
+import Security
+import Swift
+import UIKit
+import Vision
+public protocol FaceTrackerDelegate {
+  func didStartCameraSession()
+  func faceTracked(sampleBuffer: CoreMedia.CMSampleBuffer?, img: UIKit.UIImage, facePoints: IncdUtils.FacePoints?, state: IncdUtils.FaceResult?, allFacePoints: [CoreGraphics.CGPoint]?)
+  func didChangeCamBrightnessExposure(brightness: Swift.Double, exposure: Swift.Double)
+}
+extension FaceTrackerDelegate {
+  public func didStartCameraSession()
+  public func faceTracked(sampleBuffer: CoreMedia.CMSampleBuffer?, img: UIKit.UIImage, facePoints: IncdUtils.FacePoints?, state: IncdUtils.FaceResult?, allFacePoints: [CoreGraphics.CGPoint]?)
+  public func didChangeCamBrightnessExposure(brightness: Swift.Double, exposure: Swift.Double)
+}
+@frozen public enum Result<T, E> where E : Swift.Error {
+  public typealias Callback = (IncdUtils.Result<T, E>) -> Swift.Void
+  case success(T)
+  case failure(E)
+  public init(value: T)
+  public init(error: E)
+  public var value: T? {
+    get
+  }
+  public var error: E? {
+    get
+  }
+  public var isSuccess: Swift.Bool {
+    get
+  }
+  public var isFailure: Swift.Bool {
+    get
+  }
+  public func map<P>(_ success: (T) -> P) -> IncdUtils.Result<P, E>
+  public func voidMap() -> IncdUtils.Result<Swift.Void, E>
+  public func mapError<E2>(_ failure: (E) -> E2) -> IncdUtils.Result<T, E2> where E2 : Swift.Error
+  public func flatMap<P>(_ success: (T) -> IncdUtils.Result<P, E>) -> IncdUtils.Result<P, E>
+  @discardableResult
+  public func onSuccess(_ success: (T) -> Swift.Void) -> IncdUtils.Result<T, E>
+  @discardableResult
+  public func onFailure(_ failure: (E) -> Swift.Void) -> IncdUtils.Result<T, E>
+  @discardableResult
+  public func resolve(success: (T) -> Swift.Void, failure: (E) -> Swift.Void) -> IncdUtils.Result<T, E>
+}
+@frozen @objc public enum FaceCameraResolution : Swift.Int {
+  case medium
+  case high
+  case maximum
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class IncdFaceCamera : ObjectiveC.NSObject {
+  public var delegate: IncdUtils.FaceTrackerDelegate?
+  @objc public var previewLayer: AVFoundation.AVCaptureVideoPreviewLayer?
+  @objc open var faceTime: Swift.Float
+  @objc open var frameMemorySize: Swift.Int
+  @objc open var iou: Swift.Float
+  @objc open var faceAngle: Swift.Int
+  @objc open var skipTooClose: Swift.Bool
+  @objc open var minFaceSizeToDetect: Swift.Double
+  @objc open var minFace: Swift.Double
+  @objc open var maxFace: Swift.Double
+  @objc open var drawFaceLandmarks: Swift.Bool
+  @objc open var faceCameraResolution: IncdUtils.FaceCameraResolution
+  @objc open var bottomMargin: CoreGraphics.CGFloat
+  @objc open var topMargin: CoreGraphics.CGFloat
+  @objc open var leftMargin: CoreGraphics.CGFloat
+  @objc open var rightMargin: CoreGraphics.CGFloat
+  @objc open var xOffset: CoreGraphics.CGFloat
+  @objc open var shouldProcessFrames: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc open var orientation: UIKit.UIDeviceOrientation
+  @objc open var videoOrientation: AVFoundation.AVCaptureVideoOrientation
+  @objc public func begin()
+  public func startSession(onView: UIKit.UIView?, delegate: IncdUtils.FaceTrackerDelegate, orientation: AVFoundation.AVCaptureVideoOrientation)
+  @objc public func resumeSession()
+  @objc public func stopSession()
+  @objc public func capture(img: @escaping ((UIKit.UIImage?, CoreImage.CIFaceFeature?, Swift.Error?) -> Swift.Void))
+  @objc public func set(baseURL: Swift.String, apiKey: Swift.String, confidence: Swift.Float)
+  @objc public func setExposureMode(_ mode: AVFoundation.AVCaptureDevice.ExposureMode, at devicePoint: CoreGraphics.CGPoint, monitorSubjectAreaChange: Swift.Bool)
+  @objc deinit
+}
+@frozen @objc public enum IncodeErrorType : Swift.Int {
+  case wrongParameters = 0
+  case wrongResponse = 1
+  case noConnectivity = 2
+  case serverError = 3
+  case unauthorized = 4
+  case nonExistingUser = 5
+  case cropTooSmall = 6
+  case faceIsTooBlurry = 7
+  case errorNotDefined = 8
+  public func errorDescription() -> Swift.String
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeError : ObjectiveC.NSObject {
+  @objc final public let error: Foundation.NSError
+  @objc final public let type: IncdUtils.IncodeErrorType
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileInitializationResponse : ObjectiveC.NSObject {
+  @objc final public let isEnrolled: Swift.Bool
+  @objc final public let token: Swift.String
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileFloatResponse : ObjectiveC.NSObject {
+  @objc final public let value: Swift.Float
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileSpoofDetectResponse : ObjectiveC.NSObject {
+  @objc final public let confidence: Swift.Float
+  @objc final public let blurriness: Swift.Float
+  @objc final public let isSpoof: Swift.Bool
+  @objc final public let statsID: Swift.String
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileStatsResponse : ObjectiveC.NSObject {
+  @objc final public let value: Swift.Bool
+  @objc final public let statID: Swift.String
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileBoolResponse : ObjectiveC.NSObject {
+  @objc final public let value: Swift.Bool
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc public class IncodeSmileDictResponse : ObjectiveC.NSObject {
+  @objc final public let value: [Swift.String : Swift.AnyObject]?
+  @objc deinit
+  @objc override dynamic public init()
+}
+@objc public class IncodeServiceConfiguration : ObjectiveC.NSObject {
+  @objc final public let baseURL: Swift.String
+  @objc final public let apiKey: Swift.String
+  @objc final public let confidenceThreshold: Swift.Float
+  @objc public init(baseURL: Swift.String, apiKey: Swift.String, confidenceThreshold: Swift.Float)
+  @objc deinit
+  @objc override dynamic public init()
+}
+public typealias IncodeToken = Swift.String
+@objc @_inheritsConvenienceInitializers public class IncodeService : ObjectiveC.NSObject {
+  @objc public static var configuration: IncdUtils.IncodeServiceConfiguration!
+  @objc public class func initialize(phoneNumber: Swift.String, callback: @escaping (IncdUtils.IncodeSmileInitializationResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  public class func sendSpoof(frameData: IncdUtils.FrameData, callback: @escaping (IncdUtils.IncodeSmileStatsResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  public class func updateStats(frameData: IncdUtils.FrameData, callback: @escaping (IncdUtils.IncodeSmileStatsResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  @objc public class func startInterview(callback: @escaping (IncdUtils.IncodeSmileDictResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  public class func updateInterview<T, X>(crop: UIKit.UIImage, selfie: UIKit.UIImage, interviewID: Swift.String, birthDate: X, name: T, gender: T, address: T, acuantId: T, callback: @escaping (IncdUtils.IncodeSmileBoolResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  public class func detectSpoof(img: UIKit.UIImage, face: IncdUtils.FacePoints, callback: @escaping (IncdUtils.IncodeSmileFloatResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  public class func detectSpoofWithEyes(img: UIKit.UIImage, face: IncdUtils.FacePoints, callback: @escaping (IncdUtils.IncodeSmileSpoofDetectResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  @objc public class func enroll(facePhoto: UIKit.UIImage, template: Swift.String, callback: @escaping (IncdUtils.IncodeSmileBoolResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  @objc public class func login(template: Swift.String, callback: @escaping (IncdUtils.IncodeSmileFloatResponse?, IncdUtils.IncodeError?) -> Swift.Void)
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension NSNotification.Name {
+  public static let IncdAnalyticsCameraDidInit: Foundation.NSNotification.Name
+  public static let IncdAnalyticsServerProcessingFR: Foundation.NSNotification.Name
+  public static let IncdAnalyticsRequestSizeServerSD: Foundation.NSNotification.Name
+}
+@frozen public struct FrameSize : Swift.Codable {
+  internal var width: CoreGraphics.CGFloat
+  internal var height: CoreGraphics.CGFloat
+  public init(width: CoreGraphics.CGFloat, height: CoreGraphics.CGFloat)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct FaceInFrame : Swift.Codable {
+  internal var leftEyeX: Swift.Double
+  internal var leftEyeY: Swift.Double
+  internal var rightEyeX: Swift.Double
+  internal var rightEyeY: Swift.Double
+  internal var mouthX: Swift.Double
+  internal var mouthY: Swift.Double
+  internal var x: Swift.Double
+  internal var y: Swift.Double
+  internal var width: Swift.Double
+  internal var height: Swift.Double
+  public init(face: IncdUtils.FacePoints)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@frozen public struct FrameData : Swift.Codable {
+  public var statsID: Swift.String
+  public var isSpoof: Swift.String? = nil
+  internal let deviceType: Swift.String = "IOS"
+  internal let deviceName: Swift.String = UIDevice.modelName
+  internal let version: Swift.String = UIDevice.current.systemVersion
+  internal var livenessConfidence: Swift.Double
+  public var frameSize: IncdUtils.FrameSize
+  public var coordinates: IncdUtils.FaceInFrame
+  internal var brightness: Swift.Float
+  internal var blurriness: Swift.Float
+  internal let buildNumber: Swift.String = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "undefined"
+  public init(statsID: Swift.String = "", spoof: Swift.Bool? = nil, confidence: Swift.Double, fSize: CoreGraphics.CGSize, face: IncdUtils.FacePoints, brightness: Swift.Float = 0.0, blurriness: Swift.Float = 0.0)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension FrameData : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class IncodeKeychainManager : ObjectiveC.NSObject {
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class IncdCIFaceCamera : IncdUtils.IncdFaceCamera {
+  @objc override public func begin()
+  override public func startSession(onView: UIKit.UIView?, delegate: IncdUtils.FaceTrackerDelegate, orientation: AVFoundation.AVCaptureVideoOrientation = .portrait)
+  @objc override public func resumeSession()
+  @objc override public func stopSession()
+  @objc override public func set(baseURL: Swift.String, apiKey: Swift.String, confidence: Swift.Float)
+  @objc override public func setExposureMode(_ mode: AVFoundation.AVCaptureDevice.ExposureMode, at devicePoint: CoreGraphics.CGPoint, monitorSubjectAreaChange: Swift.Bool)
+  @objc deinit
+}
+extension IncdCIFaceCamera : AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate {
+  @objc dynamic public func captureOutput(_ output: AVFoundation.AVCaptureOutput, didOutput sampleBuffer: CoreMedia.CMSampleBuffer, from connection: AVFoundation.AVCaptureConnection)
+  @objc dynamic public func captureOutput(_ output: AVFoundation.AVCaptureOutput, didDrop sampleBuffer: CoreMedia.CMSampleBuffer, from connection: AVFoundation.AVCaptureConnection)
+}
+extension IncdCIFaceCamera : AVFoundation.AVCaptureMetadataOutputObjectsDelegate {
+  @objc dynamic public func metadataOutput(_ output: AVFoundation.AVCaptureMetadataOutput, didOutput metadataObjects: [AVFoundation.AVMetadataObject], from connection: AVFoundation.AVCaptureConnection)
+}
+extension AVCaptureVideoOrientation {
+  public init(orientation: UIKit.UIDeviceOrientation)
+}
+extension UIDevice {
+  public static let modelName: Swift.String
+}
+@frozen public enum IncdRegion : Swift.CaseIterable {
+  case Mexico, US
+  public var name: Swift.String {
+    get
+  }
+  public var code: Swift.String {
+    get
+  }
+  public var emoji: Swift.String! {
+    get
+  }
+  public static func getRegionBy(code: Swift.String) -> IncdUtils.IncdRegion?
+  public static func == (a: IncdUtils.IncdRegion, b: IncdUtils.IncdRegion) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+  public typealias AllCases = [IncdUtils.IncdRegion]
+  public static var allCases: [IncdUtils.IncdRegion] {
+    get
+  }
+}
+@frozen public enum FacePointsKeys : Swift.String {
+  case centerMouth
+  case leftEye
+  case rightEye
+  case bounds
+  case hasFaceAngle
+  case leftEyeClosed
+  case rightEyeClosed
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public typealias FacePoints = Swift.Dictionary<IncdUtils.FacePointsKeys, Any>
+extension CIFaceFeature {
+  public func packIntoDictionary() -> IncdUtils.FacePoints
+}
+extension Dictionary where Key == IncdUtils.FacePointsKeys, Value == Any {
+  public var mouthPosition: CoreGraphics.CGPoint {
+    get
+    set
+  }
+  public var leftEye: CoreGraphics.CGPoint {
+    get
+    set
+  }
+  public var rightEye: CoreGraphics.CGPoint {
+    get
+    set
+  }
+  public var bounds: CoreGraphics.CGRect {
+    get
+    set
+  }
+  public var hasFaceAngle: Swift.Bool {
+    get
+    set
+  }
+  public var leftEyeClosed: Swift.Bool {
+    get
+    set
+  }
+  public var rightEyeClosed: Swift.Bool {
+    get
+    set
+  }
+  public func magicCrop(source: CoreGraphics.CGSize) -> CoreGraphics.CGRect
+  public func magicCropInverted() -> CoreGraphics.CGRect
+}
+extension CGRect {
+  public init(magicCropWithfacePoints facePoints: IncdUtils.FacePoints, source: CoreGraphics.CGSize)
+}
+extension CIImage {
+  public var cgImgRep: CoreGraphics.CGImage? {
+    get
+  }
+  public func transformedRectForFaceUIPoints(_ cIPoints: IncdUtils.FacePoints) -> CoreGraphics.CGRect
+}
+extension UIImage {
+  public func transformedRectForFaceUIPoints(_ magicCropRect: CoreGraphics.CGRect) -> CoreGraphics.CGRect
+  public var cgImgRep: CoreGraphics.CGImage? {
+    get
+  }
+  public var portrait: UIKit.UIImage {
+    get
+  }
+  public func cropToRect(_ newRect: CoreGraphics.CGRect) -> UIKit.UIImage?
+  public func imageRotatedBy(degrees: CoreGraphics.CGFloat, flipX: Swift.Bool, flipY: Swift.Bool = true) -> UIKit.UIImage?
+  public func faceRectFromFeatures(features: CoreImage.CIFaceFeature) -> CoreGraphics.CGRect
+  public func imageUsing(rect: CoreGraphics.CGRect) -> UIKit.UIImage?
+  public func magicNear(face: CoreImage.CIFaceFeature) -> UIKit.UIImage?
+  public func imageUsing(face: CoreImage.CIFaceFeature, padding: CoreGraphics.CGFloat) -> UIKit.UIImage?
+  public var jpegEncoded: Swift.String? {
+    get
+  }
+  public var pngEncoded: Swift.String? {
+    get
+  }
+}
+@frozen @objc public enum FaceState : Swift.Int {
+  case tooClose
+  case tooFarAway
+  case fine
+  case seenDistance
+  case notFound
+  case hasLenses
+  case tooBlurry
+  case tooDark
+  case notAligned
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public class FaceResult : ObjectiveC.NSObject {
+  public var threshold: Swift.Float
+  public var value: Swift.Float
+  public var state: IncdUtils.FaceState
+  public init(threshold: Swift.Float, value: Swift.Float, state: IncdUtils.FaceState)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension CGRect {
+  public var area: Swift.Int {
+    get
+  }
+  public static func > (left: CoreGraphics.CGRect, right: CoreGraphics.CGRect) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers public class IncdFaceCameraManager {
+  open class func shared(forceCI: Swift.Bool = false) -> IncdUtils.IncdFaceCamera
+  @objc deinit
+}
+extension IncdUtils.FaceCameraResolution : Swift.Equatable {}
+extension IncdUtils.FaceCameraResolution : Swift.Hashable {}
+extension IncdUtils.FaceCameraResolution : Swift.RawRepresentable {}
+extension IncdUtils.IncodeErrorType : Swift.Equatable {}
+extension IncdUtils.IncodeErrorType : Swift.Hashable {}
+extension IncdUtils.IncodeErrorType : Swift.RawRepresentable {}
+extension IncdUtils.IncdRegion : Swift.Equatable {}
+extension IncdUtils.IncdRegion : Swift.Hashable {}
+extension IncdUtils.FacePointsKeys : Swift.Equatable {}
+extension IncdUtils.FacePointsKeys : Swift.Hashable {}
+extension IncdUtils.FacePointsKeys : Swift.RawRepresentable {}
+extension IncdUtils.FaceState : Swift.Equatable {}
+extension IncdUtils.FaceState : Swift.Hashable {}
+extension IncdUtils.FaceState : Swift.RawRepresentable {}
